@@ -27,3 +27,5 @@ dist-ssr
 .env
 .env.*
 !.env.example
+# Respaldos locales de PostgreSQL
+*.backup
