@@ -10,6 +10,7 @@ import favoritosRoutes from './routes/favoritos.routes.js'
 import inventarioRoutes from './routes/inventario.routes.js'
 import estadisticasRoutes from './routes/estadisticas.routes.js'
 import externaRoutes from './routes/externa.routes.js'
+import clientesRoutes from './routes/clientes.routes.js'
 dotenv.config()
 
 const app = express()
@@ -54,6 +55,7 @@ app.use('/api/favoritos', favoritosRoutes)
 app.use('/api/inventario', inventarioRoutes)
 app.use('/api/estadisticas', estadisticasRoutes)
 app.use('/api/externa', externaRoutes)
+app.use('/api/clientes', clientesRoutes)
 // Iniciar servidor
 app.listen(PORT, () => {
   console.log(`Servidor TechMarket ejecutándose en http://localhost:${PORT}`)

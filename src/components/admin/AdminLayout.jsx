@@ -5,19 +5,12 @@ import * as Icons from './shared/Icons'
 
 const navItems = [
   { id: 'dashboard',      label: 'Dashboard',       Icon: Icons.BarChart2 },
-  { id: 'productos',      label: 'Productos',        Icon: Icons.Package },
-  { id: 'categorias',     label: 'Categorías',       Icon: Icons.Tag },
-  { id: 'clientes',       label: 'Clientes',         Icon: Icons.Users },
-  { id: 'pedidos',        label: 'Pedidos',          Icon: Icons.ShoppingCart },
-  { id: 'ventas',         label: 'Ventas',           Icon: Icons.DollarSign },
-  { id: 'caja',           label: 'Caja',             Icon: Icons.Wallet },
-  { id: 'proveedores',    label: 'Proveedores',      Icon: Icons.Truck },
-  { id: 'ordenes-compra', label: 'Órdenes compra',   Icon: Icons.ClipboardList },
-  { id: 'inventario',     label: 'Inventario',       Icon: Icons.AlertTriangle },
-  { id: 'movimientos',    label: 'Movimientos',      Icon: Icons.RefreshCw },
-  { id: 'descuentos',     label: 'Descuentos',       Icon: Icons.Percent },
-  { id: 'reportes',       label: 'Reportes',         Icon: Icons.TrendingUp },
-  { id: 'whatsapp',      label: 'WhatsApp (QR)',   Icon: Icons.Inbox },
+  { id: 'productos',      label: 'Productos',       Icon: Icons.Package },
+  { id: 'categorias',     label: 'Categorías',      Icon: Icons.Tag },
+  { id: 'inventario',     label: 'Inventario',      Icon: Icons.AlertTriangle },
+  { id: 'clientes',       label: 'Clientes',        Icon: Icons.Users },
+  { id: 'pedidos',        label: 'Pedidos',         Icon: Icons.ShoppingCart },
+  { id: 'estadisticas',   label: 'Estadísticas',    Icon: Icons.TrendingUp },
 ]
 
 function AdminLayout({ children, activeSection, onSectionChange }) {
@@ -50,7 +43,7 @@ function AdminLayout({ children, activeSection, onSectionChange }) {
         }}>
           {!collapsed && (
             <div style={{ fontFamily: 'var(--font-display)', fontSize: '0.95rem', fontWeight: 700, whiteSpace: 'nowrap', overflow: 'hidden' }}>
-              Ferretería <span style={{ color: 'var(--accent)' }}>Admin</span>
+              TechMarket <span style={{ color: 'var(--accent)' }}>Admin</span>
             </div>
           )}
           <button onClick={() => setCollapsed(!collapsed)} style={{
@@ -193,4 +186,3 @@ function AdminLayout({ children, activeSection, onSectionChange }) {
 }
 
 export default AdminLayout
-

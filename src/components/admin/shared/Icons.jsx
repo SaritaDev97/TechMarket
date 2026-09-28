@@ -38,6 +38,9 @@ export const ChevronLeft  = base(<><polyline points="15 18 9 12 15 6"/></>)
 export const ChevronRight = base(<><polyline points="9 18 15 12 9 6"/></>)
 export const User         = base(<><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></>)
 export const CheckCircle  = base(<><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></>)
+export const Check = base(
+  <polyline points="20 6 9 17 4 12" />
+)
 export const MapPin       = base(<><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></>)
 export const FileText     = base(<><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></>)
 export const Inbox        = base(<><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></>)
@@ -50,7 +53,7 @@ const Icons = {
   BarChart2, Package, Tag, Users, ShoppingCart, DollarSign, Wallet, Truck,
   ClipboardList, AlertTriangle, RefreshCw, Percent, TrendingUp, Home, LogOut,
   Edit, Trash2, Clock, Search, X, Plus, Upload, Lock, Unlock,
-  ChevronDown, ChevronLeft, ChevronRight, User, CheckCircle, MapPin,
+  ChevronDown, ChevronLeft, ChevronRight, User, CheckCircle, Check, MapPin,
   FileText, Inbox, Wrench, MessageCircle, Hash,
 }
 export default Icons

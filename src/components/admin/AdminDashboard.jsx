@@ -4,7 +4,6 @@ import { toArr, toTotal } from '../../utils/parseResponse'
 import * as Icons from './shared/Icons'
 
 const STATUS_COLORS = {
-  // Enums Prisma en mayúsculas
   PENDIENTE_CONFIRMACION: { bg: '#fff3e0', color: '#e65100' },
   CONFIRMADO:             { bg: '#e8f5e9', color: '#2E7D32' },
   EN_RUTA:                { bg: '#e3f2fd', color: '#1565C0' },
@@ -13,15 +12,25 @@ const STATUS_COLORS = {
   COMPLETADA:             { bg: '#e8f5e9', color: '#2E7D32' },
 }
 
-function StatCard({ label, value, Icon, color, bg }) {
+function StatCard({ label, value, Icon, color, bg, isText }) {
   return (
     <div style={{ background: '#fff', borderRadius: '12px', padding: '1.5rem', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', display: 'flex', alignItems: 'center', gap: '1rem' }}>
       <div style={{ width: '56px', height: '56px', borderRadius: '12px', background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
         <Icon size={26} color={color} />
       </div>
-      <div>
+      <div style={{ flex: 1, minWidth: 0 }}>
         <p style={{ fontSize: '0.8rem', color: 'var(--subtle)', marginBottom: '0.25rem' }}>{label}</p>
-        <p style={{ fontSize: '1.75rem', fontFamily: 'var(--font-display)', fontWeight: 700, color }}>{value}</p>
+        <p style={{ 
+          fontSize: isText ? '1.1rem' : '1.75rem', 
+          fontFamily: 'var(--font-display)', 
+          fontWeight: 700, 
+          color,
+          whiteSpace: 'nowrap', 
+          overflow: 'hidden', 
+          textOverflow: 'ellipsis' 
+        }}>
+          {value}
+        </p>
       </div>
     </div>
   )
@@ -65,11 +74,11 @@ function AdminDashboard() {
   if (loading) return <p style={{ padding: '2rem', color: 'var(--subtle)' }}>Cargando dashboard...</p>
   if (error)   return <p style={{ padding: '2rem', color: '#c62828' }}>{error}</p>
 
+  // Tarjetas adaptadas a los requerimientos de TechMarket
   const stats = [
-    { label: 'Ventas hoy',  value: `$${parseFloat(data?.ventas_hoy || 0).toFixed(2)}`, Icon: Icons.DollarSign,  color: '#2E7D32', bg: '#e8f5e9' },
-    { label: 'Ventas mes',  value: `$${parseFloat(data?.ventas_mes || 0).toFixed(2)}`, Icon: Icons.TrendingUp,  color: '#1565C0', bg: '#e3f2fd' },
-    { label: 'Productos',   value: extraStats.total_productos,                          Icon: Icons.Package,     color: '#FF6B35', bg: '#fff3e0' },
-    { label: 'Clientes',    value: extraStats.total_clientes,                           Icon: Icons.Users,       color: '#6a1b9a', bg: '#f3e5f5' },
+    { label: 'Ventas mensuales', value: `$${parseFloat(data?.ventas_mes || 0).toFixed(2)}`, Icon: Icons.DollarSign,   color: '#2E7D32', bg: '#e8f5e9' },
+    { label: 'Total de pedidos', value: data?.total_pedidos || 0,                           Icon: Icons.ShoppingCart, color: '#1565C0', bg: '#e3f2fd' },
+    { label: 'Producto más vendido', value: topProds[0]?.nombre || topProds[0]?.name || 'Sin datos', Icon: Icons.Package, color: '#FF6B35', bg: '#fff3e0', isText: true },
   ]
 
   const recentOrders = extraStats.pedidos_recientes
@@ -77,7 +86,7 @@ function AdminDashboard() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
         {stats.map((s, i) => <StatCard key={i} {...s} />)}
       </div>
 
@@ -100,7 +109,6 @@ function AdminDashboard() {
                 <tbody>
                   {recentOrders.map((order, i) => {
                     const estado = order.estado || ''
-                    // Prisma: clientes relation
                     const clienteNombre = order.clientes?.nombre || order.cliente?.nombre || '–'
                     return (
                       <tr key={i} style={{ borderBottom: '1px solid var(--border)' }}>

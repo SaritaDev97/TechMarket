@@ -6,7 +6,7 @@ export function verificarToken(req, res, next) {
 
     if (!authorization) {
       return res.status(401).json({
-        message: 'Token no proporcionado',
+        message: 'Token no proporcionado'
       })
     }
 
@@ -14,7 +14,7 @@ export function verificarToken(req, res, next) {
 
     if (tipo !== 'Bearer' || !token) {
       return res.status(401).json({
-        message: 'Token inválido',
+        message: 'Token inválido'
       })
     }
 
@@ -28,7 +28,26 @@ export function verificarToken(req, res, next) {
     next()
   } catch {
     return res.status(401).json({
-      message: 'Token inválido o expirado',
+      message: 'Token inválido o expirado'
     })
   }
+}
+
+// ======================================================
+// PERMITIR SOLO ADMINISTRADORES
+// ======================================================
+export function soloAdmin(req, res, next) {
+  if (!req.usuario) {
+    return res.status(401).json({
+      message: 'Usuario no autenticado'
+    })
+  }
+
+  if (req.usuario.rol !== 'admin') {
+    return res.status(403).json({
+      message: 'Acceso permitido únicamente para administradores'
+    })
+  }
+
+  next()
 }

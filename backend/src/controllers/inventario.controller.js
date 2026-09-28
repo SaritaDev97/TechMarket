@@ -51,6 +51,53 @@ export async function getInventario(req, res) {
 }
 
 
+// GET /api/inventario/criticos
+// Devuelve productos con stock crítico (5 unidades o menos)
+export async function getInventarioCriticos(req, res) {
+  try {
+    const productos = await prisma.producto.findMany({
+      where: {
+        activo: true,
+        stock: {
+          lte: 5
+        }
+      },
+      select: {
+        id: true,
+        nombre: true,
+        marca: true,
+        stock: true,
+        categoria: {
+          select: {
+            id: true,
+            nombre: true
+          }
+        }
+      },
+      orderBy: {
+        stock: 'asc'
+      }
+    })
+
+    const data = productos.map(producto => ({
+      ...producto,
+      stock_minimo: 5,
+      categorias: producto.categoria
+    }))
+
+    return res.json({
+      data,
+      total: data.length
+    })
+  } catch (error) {
+    console.error('Error al obtener inventario crítico:', error)
+
+    return res.status(500).json({
+      message: 'Error al obtener inventario crítico'
+    })
+  }
+}
+
 // GET /api/inventario/resumen
 // Resumen general del inventario
 export async function getResumenInventario(req, res) {

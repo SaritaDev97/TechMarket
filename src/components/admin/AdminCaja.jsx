@@ -13,8 +13,7 @@ function AdminCaja() {
   const [saving, setSaving]       = useState(false)
   const [error, setError]         = useState(null)
   const [montoApertura, setMontoApertura] = useState('')
-  const [observacion, setObservacion]     = useState('')
-
+  
   function cargar() {
     setLoading(true)
     Promise.all([
@@ -51,7 +50,7 @@ function AdminCaja() {
       const { data } = await abrirCaja({ monto_inicial: parseFloat(montoApertura) })
       console.log('[Abrir caja]', data)
       setEstado(data?.data || data)
-      setMontoApertura(''); setObservacion('')
+      setMontoApertura('')
       cargar()
     } catch (err) {
       setError(err.response?.data?.message || 'Error al abrir caja')
