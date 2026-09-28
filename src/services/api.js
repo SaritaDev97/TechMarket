@@ -357,5 +357,14 @@ export const getReporteMensual = () =>
 export const getTopProductos = () =>
   api.get('/reportes/top-productos')
 
+// ── API externa / Tipo de cambio ─────────────────────────────
+
+// Obtiene desde nuestro backend el tipo de cambio
+// tomando USD como moneda base.
+export const getTipoCambio = (moneda) =>
+  api.get('/externa/tipo-cambio', {
+    params: { moneda },
+  })
+
 
 export default api

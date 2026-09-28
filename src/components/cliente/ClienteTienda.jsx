@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-import { getProductos, getCategorias } from '../../services/api'
+import {
+  getProductos,
+  getCategorias,
+  getTipoCambio
+} from '../../services/api'
+
 import { toArr, toTotal } from '../../utils/parseResponse'
 import { useCart } from '../../context/CartContext'
 import { useCompare } from '../../context/CompareContext'
@@ -180,6 +185,10 @@ export default function ClienteTienda() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [adding, setAdding] = useState(null)
+  const [moneda, setMoneda] = useState('USD')
+const [tasaCambio, setTasaCambio] = useState(1)
+const [cargandoMoneda, setCargandoMoneda] = useState(false)
+const [errorMoneda, setErrorMoneda] = useState('')
 
   // ───────────────────────────────────────────────────────────
   // CARGAR CATEGORÍAS
@@ -190,6 +199,47 @@ export default function ClienteTienda() {
       .then((r) => setCategorias(toArr(r.data)))
       .catch(() => {})
   }, [])
+
+
+  async function handleMonedaChange(e) {
+  const nuevaMoneda = e.target.value
+
+  setMoneda(nuevaMoneda)
+  setErrorMoneda('')
+
+  // USD es la moneda original del sistema
+  if (nuevaMoneda === 'USD') {
+    setTasaCambio(1)
+    return
+  }
+
+  try {
+    setCargandoMoneda(true)
+
+    const response = await getTipoCambio(nuevaMoneda)
+
+    const tasa = Number(response.data?.data?.tasa)
+
+    if (!tasa || Number.isNaN(tasa)) {
+      throw new Error('Tasa de cambio inválida')
+    }
+
+    setTasaCambio(tasa)
+  } catch (error) {
+    console.error('Error al consultar tipo de cambio:', error)
+
+    // Si la API falla, regresamos de forma segura a USD.
+    setMoneda('USD')
+    setTasaCambio(1)
+    setErrorMoneda(
+      'No se pudo consultar el tipo de cambio. Se mantienen los precios en USD.'
+    )
+  } finally {
+    setCargandoMoneda(false)
+  }
+}
+
+
 
   // ───────────────────────────────────────────────────────────
   // CARGAR PRODUCTOS
@@ -374,6 +424,79 @@ export default function ClienteTienda() {
         </div>
       </Card>
 
+      {/* ───────────────── SELECTOR DE MONEDA / API EXTERNA ───────────────── */}
+
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          gap: '0.75rem',
+          marginBottom: '1rem',
+          flexWrap: 'wrap',
+        }}
+      >
+        <label
+          htmlFor="selector-moneda"
+          style={{
+            fontSize: '0.875rem',
+            fontWeight: 600,
+            color: '#374151',
+          }}
+        >
+          Moneda:
+        </label>
+
+        <select
+          id="selector-moneda"
+          value={moneda}
+          onChange={handleMonedaChange}
+          disabled={cargandoMoneda}
+          style={{
+            padding: '0.55rem 0.75rem',
+            borderRadius: '8px',
+            border: '1px solid #d1d5db',
+            background: '#fff',
+            color: '#374151',
+            cursor: cargandoMoneda ? 'wait' : 'pointer',
+          }}
+        >
+          <option value="USD">USD - Dólar</option>
+          <option value="EUR">EUR - Euro</option>
+          <option value="MXN">MXN - Peso mexicano</option>
+          <option value="GTQ">GTQ - Quetzal</option>
+        </select>
+
+        {cargandoMoneda && (
+          <span
+            style={{
+              fontSize: '0.8rem',
+              color: '#6b7280',
+            }}
+          >
+            Consultando API...
+          </span>
+        )}
+      </div>
+
+      {errorMoneda && (
+        <div
+          style={{
+            background: '#fff7ed',
+            color: '#c2410c',
+            padding: '0.75rem 1rem',
+            borderRadius: '8px',
+            marginBottom: '1rem',
+            fontSize: '0.85rem',
+          }}
+        >
+          {errorMoneda}
+        </div>
+      )}
+
+
+
+
       {/* ───────────────── COMPARADOR ACTIVO ───────────────── */}
 
       {compareTotal > 0 && (
@@ -537,6 +660,8 @@ export default function ClienteTienda() {
               comparing={isInCompare(p.id)}
               compareTotal={compareTotal}
               maxCompare={maxCompare}
+              moneda={moneda}
+              tasaCambio={tasaCambio}
             />
           ))}
         </div>
@@ -572,11 +697,25 @@ function ProductCard({
   comparing,
   compareTotal,
   maxCompare,
+   moneda,
+  tasaCambio,
 }) {
   const sinStock = Number(p.stock) <= 0
 
   const compareDisabled =
     !comparing && compareTotal >= maxCompare
+
+    const simbolosMoneda = {
+  USD: '$',
+  EUR: '€',
+  MXN: 'MX$',
+  GTQ: 'Q',
+}
+
+const simboloMoneda = simbolosMoneda[moneda] || moneda
+
+const convertirPrecio = (precio) =>
+  (Number(precio || 0) * tasaCambio).toFixed(2)
 
   return (
     <div
@@ -830,43 +969,39 @@ function ProductCard({
 
         {/* ───────────────── PRECIO ───────────────── */}
 
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'baseline',
-            gap: '0.5rem',
-            marginTop: 'auto',
-            paddingTop: '0.5rem',
-          }}
-        >
-          <span
-            style={{
-              fontSize: '1.05rem',
-              fontWeight: 700,
-              color: 'var(--accent)',
-            }}
-          >
-            $
-            {parseFloat(
-              p.precio_venta || 0
-            ).toFixed(2)}
-          </span>
+<div
+  style={{
+    display: 'flex',
+    alignItems: 'baseline',
+    gap: '0.5rem',
+    marginTop: 'auto',
+    paddingTop: '0.5rem',
+  }}
+>
+  <span
+    style={{
+      fontSize: '1.05rem',
+      fontWeight: 700,
+      color: 'var(--accent)',
+    }}
+  >
+    {simboloMoneda}
+    {convertirPrecio(p.precio_venta)}
+  </span>
 
-          {p.precio_anterior && (
-            <span
-              style={{
-                fontSize: '0.73rem',
-                color: '#d1d5db',
-                textDecoration: 'line-through',
-              }}
-            >
-              $
-              {parseFloat(
-                p.precio_anterior
-              ).toFixed(2)}
-            </span>
-          )}
-        </div>
+  {p.precio_anterior && (
+    <span
+      style={{
+        fontSize: '0.73rem',
+        color: '#d1d5db',
+        textDecoration: 'line-through',
+      }}
+    >
+      {simboloMoneda}
+      {convertirPrecio(p.precio_anterior)}
+    </span>
+  )}
+</div>
 
         {/* ───────────────── VER DETALLE ───────────────── */}
 
