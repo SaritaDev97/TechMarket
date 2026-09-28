@@ -5,15 +5,7 @@ import AdminProductos from '../../components/admin/AdminProductos'
 import AdminCategorias from '../../components/admin/AdminCategorias'
 import AdminClientes from '../../components/admin/AdminClientes'
 import AdminPedidos from '../../components/admin/AdminPedidos'
-import AdminVentas from '../../components/admin/AdminVentas'
-import AdminCaja from '../../components/admin/AdminCaja'
-import AdminProveedores from '../../components/admin/AdminProveedores'
-import AdminOrdenesCompra from '../../components/admin/AdminOrdenesCompra'
 import AdminInventario from '../../components/admin/AdminInventario'
-import AdminMovimientos from '../../components/admin/AdminMovimientos'
-import AdminDescuentos from '../../components/admin/AdminDescuentos'
-import AdminReportes from '../../components/admin/AdminReportes'
-import AdminWhatsApp from '../../components/admin/AdminWhatsApp'
 
 function AdminPage() {
   const [activeSection, setActiveSection] = useState('dashboard')
@@ -23,17 +15,15 @@ function AdminPage() {
       case 'dashboard':      return <AdminDashboard />
       case 'productos':      return <AdminProductos />
       case 'categorias':     return <AdminCategorias />
+      case 'inventario':     return <AdminInventario />
       case 'clientes':       return <AdminClientes />
       case 'pedidos':        return <AdminPedidos />
-      case 'ventas':         return <AdminVentas />
-      case 'caja':           return <AdminCaja />
-      case 'proveedores':    return <AdminProveedores />
-      case 'ordenes-compra': return <AdminOrdenesCompra />
-      case 'inventario':     return <AdminInventario />
-      case 'movimientos':    return <AdminMovimientos />
-      case 'descuentos':     return <AdminDescuentos />
-      case 'reportes':       return <AdminReportes />
-      case 'whatsapp':       return <AdminWhatsApp />
+      case 'estadisticas':   return (
+        <div style={{ textAlign: 'center', marginTop: '3rem', color: '#666' }}>
+          <h2>Estadísticas de Ventas</h2>
+          <p>Módulo en adaptación...</p>
+        </div>
+      )
       default:               return <AdminDashboard />
     }
   }

@@ -13,7 +13,6 @@ import IdeasPage from './pages/IdeasPage'
 import CategoriaPage from './pages/CategoriaPage'
 import NotFoundPage from './pages/NotFoundPage'
 import AdminPage from './pages/admin/AdminPage'
-import OperadorPage from './pages/operador/OperadorPage'
 import ClientePage from './pages/cliente/ClientePage'
 import CartSidebar from './components/ui/CartSidebar'
 import WishlistSidebar from './components/ui/WishlistSidebar'
@@ -30,7 +29,6 @@ function App() {
           <Routes>
             {/* Rutas de panel interno sin header/footer */}
             <Route path="/admin"    element={<AdminPage />} />
-            <Route path="/operador" element={<OperadorPage />} />
             <Route path="/cliente"  element={<ClientePage />} />
 
             {/* Rutas normales con header/footer */}
