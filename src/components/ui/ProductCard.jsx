@@ -19,10 +19,18 @@ function ProductCard({ product }) {
   )
 
   const anterior = parseFloat(
-    product.precio_anterior || product.oldPrice || 0
-  )
+  product.precio_anterior || product.oldPrice || 0
+)
 
-  const enStock =
+// Calcular porcentaje de descuento automáticamente
+const tieneDescuento =
+  anterior > precio && precio > 0
+
+const porcentajeDescuento = tieneDescuento
+  ? Math.round(((anterior - precio) / anterior) * 100)
+  : 0
+
+const enStock =
     product.stock !== undefined
       ? product.stock > 0
       : product.inStock ?? true
@@ -42,7 +50,10 @@ function ProductCard({ product }) {
         <div
           className="product-card__image"
           onClick={() => setShowModal(true)}
-          style={{ cursor: 'pointer' }}
+          style={{
+  cursor: 'pointer',
+  position: 'relative'
+}}
         >
           {imagen ? (
             <img
@@ -65,6 +76,26 @@ function ProductCard({ product }) {
               📦
             </div>
           )}
+{/* Etiqueta de descuento */}
+{tieneDescuento && (
+  <div
+    style={{
+      position: 'absolute',
+      top: '10px',
+      right: '52px',
+      zIndex: 2,
+      background: '#dc2626',
+      color: '#fff',
+      fontSize: '0.75rem',
+      fontWeight: 800,
+      padding: '0.35rem 0.55rem',
+      borderRadius: '7px',
+      boxShadow: '0 2px 6px rgba(0,0,0,0.15)'
+    }}
+  >
+    -{porcentajeDescuento}%
+  </div>
+)}
 
           {product.badge && (
             <div className="product-card__badge">
@@ -119,19 +150,54 @@ function ProductCard({ product }) {
           </p>
 
           {/* Precio */}
-          <div className="product-card__price">
+          {/* Precio */}
+<div className="product-card__price">
 
-            {anterior > 0 && (
-              <p className="product-card__old-price">
-                ${anterior.toFixed(2)}
-              </p>
-            )}
+  {tieneDescuento && (
+    <p
+      className="product-card__old-price"
+      style={{
+        textDecoration: 'line-through',
+        color: '#9ca3af',
+        fontSize: '0.85rem',
+        marginBottom: '0.25rem'
+      }}
+    >
+      ${anterior.toFixed(2)}
+    </p>
+  )}
 
-            <p className="product-card__current-price">
-              ${precio.toFixed(2)}
-            </p>
+  <div
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: '0.6rem',
+      flexWrap: 'wrap'
+    }}
+  >
+    <p className="product-card__current-price">
+      ${precio.toFixed(2)}
+    </p>
 
-          </div>
+    {tieneDescuento && (
+      <span
+        style={{
+          background: '#dcfce7',
+          color: '#15803d',
+          fontSize: '0.72rem',
+          fontWeight: 700,
+          padding: '0.25rem 0.5rem',
+          borderRadius: '6px',
+          whiteSpace: 'nowrap'
+        }}
+      >
+        {porcentajeDescuento}% OFF
+      </span>
+    )}
+
+  </div>
+
+</div>
 
           {/* Stock */}
           <p

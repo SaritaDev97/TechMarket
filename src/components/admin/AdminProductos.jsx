@@ -20,6 +20,7 @@ const emptyForm = {
   marca: '',
   descripcion: '',
   precio: '',
+  precio_anterior: '',
   stock: '',
   imagen: '',
   categoria_id: '',
@@ -176,10 +177,14 @@ function AdminProductos() {
       marca: product.marca || '',
       descripcion: product.descripcion || '',
       precio:
-        product.precio ||
-        product.precio_venta ||
-        '',
-      stock: product.stock ?? 0,
+  product.precio ||
+  product.precio_venta ||
+  '',
+
+precio_anterior:
+  product.precio_anterior || '',
+
+stock: product.stock ?? 0,
       imagen: product.imagen || '',
       categoria_id:
         product.categoria_id ||
@@ -291,16 +296,37 @@ function AdminProductos() {
 
     const precio = Number(form.precio)
 
-    if (
-      Number.isNaN(precio) ||
-      precio < 0
-    ) {
-      return setError(
-        'El precio debe ser válido'
-      )
-    }
+if (
+  Number.isNaN(precio) ||
+  precio < 0
+) {
+  return setError(
+    'El precio debe ser válido'
+  )
+}
 
-    const stock = Number(form.stock || 0)
+let precioAnterior = null
+
+if (form.precio_anterior !== '') {
+  precioAnterior = Number(form.precio_anterior)
+
+  if (
+    Number.isNaN(precioAnterior) ||
+    precioAnterior <= 0
+  ) {
+    return setError(
+      'El precio anterior debe ser válido'
+    )
+  }
+
+  if (precioAnterior <= precio) {
+    return setError(
+      'El precio anterior debe ser mayor que el precio actual'
+    )
+  }
+}
+
+const stock = Number(form.stock || 0)
 
     if (
       !Number.isInteger(stock) ||
@@ -323,14 +349,26 @@ function AdminProductos() {
       )
 
       payload.append(
-        'precio_venta',
-        String(precio)
-      )
+  'precio_venta',
+  String(precio)
+)
 
-      payload.append(
-        'stock',
-        String(stock)
-      )
+if (precioAnterior !== null) {
+  payload.append(
+    'precio_anterior',
+    String(precioAnterior)
+  )
+} else {
+  payload.append(
+    'precio_anterior',
+    ''
+  )
+}
+
+payload.append(
+  'stock',
+  String(stock)
+)
 
       payload.append(
         'activo',
@@ -683,16 +721,23 @@ function AdminProductos() {
             )}
 
             {fi(
-              'Precio *',
-              'precio',
-              'number'
-            )}
+  'Precio actual *',
+  'precio',
+  'number'
+)}
 
-            {fi(
-              'Stock',
-              'stock',
-              'number'
-            )}
+{fi(
+  'Precio anterior (oferta)',
+  'precio_anterior',
+  'number',
+  'Ej. 59.99'
+)}
+
+{fi(
+  'Stock',
+  'stock',
+  'number'
+)}
 
             <div>
               <label style={labelStyle}>

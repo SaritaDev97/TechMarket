@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import { CartProvider } from './context/CartContext'
 import { CompareProvider } from './context/CompareContext'
+import GuiaDetallePage from './pages/GuiaDetallePage'
 
 import TopBar from './components/layout/TopBar'
 import Header from './components/layout/Header'
@@ -96,6 +97,11 @@ function App() {
                       <Route
                         path="/ideas"
                         element={<IdeasPage />}
+                      />
+
+                      <Route
+                      path="/ideas/:slug"
+                      element={<GuiaDetallePage />}
                       />
 
                       <Route

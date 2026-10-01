@@ -15,6 +15,7 @@ import ClienteTienda from '../../components/cliente/ClienteTienda'
 import ClienteCarrito from '../../components/cliente/ClienteCarrito'
 import ClientePedidos from '../../components/cliente/ClientePedidos'
 import ClienteComparar from '../../components/cliente/ClienteComparar'
+import ClienteCatalogoExterno from '../../components/cliente/ClienteCatalogoExterno'
 import ClientePerfil from '../../components/cliente/ClientePerfil'
 
 export default function ClientePage() {
@@ -121,6 +122,11 @@ export default function ClientePage() {
           <ClienteComparar />
         )
 
+        case 'catalogoExterno':
+  return (
+    <ClienteCatalogoExterno />
+  )
+
       case 'perfil':
         return (
           <ClientePerfil />
@@ -134,11 +140,11 @@ export default function ClientePage() {
   }
 
   return (
-    <ClienteLayout
-      section={section}
-      onSection={setSection}
-    >
-      {renderSection()}
-    </ClienteLayout>
-  )
+  <ClienteLayout
+    section={section}
+    onSection={setSection}
+  >
+    {renderSection()}
+  </ClienteLayout>
+)
 }

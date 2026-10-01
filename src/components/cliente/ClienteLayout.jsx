@@ -26,6 +26,12 @@ const NAV = [
     label: 'Comparar',
     Icon: Icons.Search,
   },
+
+  {
+    key: 'catalogoExterno',
+    label: 'Catálogo externo',
+    Icon: Icons.Package,
+  },
   {
     key: 'perfil',
     label: 'Mi perfil',

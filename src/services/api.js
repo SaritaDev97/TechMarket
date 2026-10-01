@@ -371,5 +371,11 @@ export const getTipoCambio = (moneda) =>
     params: { moneda },
   })
 
+// ── API externa / Catálogo tecnológico ───────────────────────
+
+// Obtiene productos tecnológicos desde la API externa.
+// Estos productos son únicamente para visualización.
+export const getProductosExternos = () =>
+  api.get('/externa/productos')
 
 export default api

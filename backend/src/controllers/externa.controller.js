@@ -50,3 +50,55 @@ export async function getTipoCambio(req, res) {
     })
   }
 }
+
+
+// GET /api/externa/productos
+// Catálogo tecnológico externo únicamente para visualización
+export async function getProductosExternos(req, res) {
+  try {
+    const response = await fetch(
+      'https://dummyjson.com/products/category/laptops?limit=20'
+    )
+
+    if (!response.ok) {
+      throw new Error(
+        `API externa respondió con estado ${response.status}`
+      )
+    }
+
+    const resultado = await response.json()
+
+    const productos = (resultado.products || []).map(producto => ({
+      id: producto.id,
+      nombre: producto.title,
+      descripcion: producto.description,
+      precio: producto.price,
+      marca: producto.brand || 'Sin marca',
+      categoria: producto.category,
+      imagen: producto.thumbnail,
+      imagenes: producto.images || [],
+      rating: producto.rating,
+      stock: producto.stock,
+      fuente: 'DummyJSON',
+      externo: true
+    }))
+
+    return res.json({
+      data: productos,
+      total: productos.length,
+      fuente: 'DummyJSON',
+      soloVisualizacion: true
+    })
+
+  } catch (error) {
+    console.error(
+      'Error al consultar catálogo externo:',
+      error
+    )
+
+    return res.status(502).json({
+      message:
+        'No se pudo consultar el catálogo externo'
+    })
+  }
+}
