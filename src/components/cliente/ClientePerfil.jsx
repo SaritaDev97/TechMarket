@@ -113,6 +113,8 @@ export default function ClientePerfil() {
     direccion: ''
   })
 
+  const [telefonoError, setTelefonoError] = useState('')
+
   const [pwForm, setPwForm] = useState({
     password_actual: '',
     password: ''
@@ -486,19 +488,38 @@ export default function ClientePerfil() {
               }
               placeholder="Tu nombre"
             />
+            
+<FormField
+  label="Teléfono"
+  type="tel"
+  value={form.telefono}
+  onChange={e => {
+    const valor = e.target.value
 
-            <FormField
-              label="Teléfono"
-              type="tel"
-              value={form.telefono}
-              onChange={(e) =>
-                setForm((p) => ({
-                  ...p,
-                  telefono: e.target.value
-                }))
-              }
-              placeholder="Ejemplo: 7000-0000"
-            />
+    if (/[^0-9]/.test(valor)) {
+      setTelefonoError('Solo puede ingresar valores numéricos')
+      return
+    }
+
+    setTelefonoError('')
+    setForm({ ...form, telefono: valor })
+  }}
+  placeholder="Ej. 77778888"
+/>
+
+{telefonoError && (
+  <p
+    style={{
+      color: '#dc2626',
+      fontSize: '0.78rem',
+      marginTop: '0.35rem',
+      marginBottom: 0,
+      fontWeight: 500,
+    }}
+  >
+    {telefonoError}
+  </p>
+)}
 
             <FormField
               label="Dirección"

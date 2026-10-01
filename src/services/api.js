@@ -74,6 +74,11 @@ export const getDashboard = () =>
   api.get('/dashboard')
 
 
+// ── Estadísticas ─────────────────────────────────────────────
+export const getEstadisticas = () =>
+  api.get('/estadisticas')
+
+
 // ── Productos ─────────────────────────────────────────────────────────────────
 // Estas dos rutas YA están conectadas con el backend nuevo de TechMarket.
 export const getProductos = (params) =>
@@ -87,13 +92,13 @@ export const getMarcas = () =>
   api.get('/productos/marcas')
 
 export const createProducto = (data) =>
-  api.post('/products', data)
+  api.post('/productos', data)
 
 export const updateProducto = (id, data) =>
-  api.put(`/products/${id}`, data)
+  api.put(`/productos/${id}`, data)
 
 export const deleteProducto = (id) =>
-  api.delete(`/products/${id}`)
+  api.delete(`/productos/${id}`)
 
 
 // ── Categorías ────────────────────────────────────────────────────────────────

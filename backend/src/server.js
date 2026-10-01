@@ -1,4 +1,5 @@
 import express from 'express'
+import path from 'path'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import authRoutes from './routes/auth.routes.js'
@@ -27,6 +28,12 @@ app.use(cors({
 
 // Permitir recibir JSON
 app.use(express.json())
+
+// Permitir acceder públicamente a las imágenes subidas
+app.use(
+  '/uploads',
+  express.static(path.resolve('uploads'))
+)
 
 // Ruta de prueba
 app.get('/api', (req, res) => {

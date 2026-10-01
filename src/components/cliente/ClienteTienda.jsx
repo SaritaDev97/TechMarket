@@ -160,6 +160,7 @@ function ProductSkeleton() {
 // ─────────────────────────────────────────────────────────────
 
 export default function ClienteTienda() {
+
   const {
     addToCart,
     cartLoading,

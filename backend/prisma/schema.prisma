@@ -41,6 +41,7 @@ model Categoria {
   id          Int        @id @default(autoincrement())
   nombre      String     @unique
   descripcion String?
+  imagen      String?
   activo      Boolean    @default(true)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
