@@ -6,14 +6,10 @@ function TopBar() {
   return (
     <div className="top-bar">
       <div className="container">
-        <div className="top-bar__left">
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-          </svg>
-          <span>Envíos disponibles en Santa Ana</span>
-        </div>
-        <div className="top-bar__right">
+        <div
+  className="top-bar__right"
+  style={{ marginLeft: 'auto' }}
+>
           <button className="top-bar__link" onClick={() => setAuthOpen(true)}>
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
